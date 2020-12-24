@@ -38,8 +38,8 @@ class CommentForm extends React.Component {
                     <ModalBody>
                         <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
                             <Row className="form-group">
-                                <Label htmlFor="Rating" md={2}>Rating</Label>
-                                <Col md={10}>
+                                <Label htmlFor="Rating" md={4}>Rating</Label>
+                                <Col md={8}>
                                     <Control.select model=".rating" id="rating" className="form-control"
                                                     name="rating">
                                         <option>1</option>
@@ -51,8 +51,8 @@ class CommentForm extends React.Component {
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="yourName" md={2}>Your Name</Label>
-                                <Col md={10}>
+                                <Label htmlFor="yourName" md={4}>Your Name</Label>
+                                <Col md={8}>
                                     <Control.text model=".lastname" id="lastname" className="form-control" name="lastname" placeholder="Last Name"
                                                   validators={{ required, minLength: minLength(3), maxLength: maxLength(15) }}/>
                                     <Errors className="text-danger" model=".lastname" show="touched"
@@ -65,13 +65,13 @@ class CommentForm extends React.Component {
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="comment" md={2}>Comment</Label>
-                                <Col md={10}>
+                                <Label htmlFor="comment" md={4}>Comment</Label>
+                                <Col md={8}>
                                     <Control.textarea model=".message" id="message" rows="12" className="form-control" name="message" />
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Col md={{size: 10, offset: 2}}>
+                                <Col md={{size: 10, offset: 0}}>
                                     <Button type="submit" color="primary" onClick={this.handleSubmitComment}>
                                         Submit
                                     </Button>

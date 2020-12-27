@@ -36,10 +36,9 @@ class CommentForm extends React.Component {
         })
     }
 
-    handleSubmitComment() {
-        this.setState({
-            isModalOpen: !this.state.isModalOpen
-        })
+    handleSubmitComment(values) {
+        this.toggleModal();
+        this.props.addComment(this.props.dishId, values.rating, values.lastname, values.message);
     }
 
     render() {
@@ -49,12 +48,16 @@ class CommentForm extends React.Component {
                 <Modal isOpen={this.state.isModalOpen}>
                     <ModalHeader>Submit Comment</ModalHeader>
                     <ModalBody>
-                        <LocalForm onSubmit={(values) => this.handleSubmit(values)}>
+                        <LocalForm onSubmit={(values) => this.handleSubmitComment(values)}>
                             <Row className="form-group">
-                                <Label htmlFor="Rating" md={4}>Rating</Label>
+                                <Label htmlFor="rating" md={4}>Rating</Label>
                                 <Col md={8}>
-                                    <Control.select model=".rating" id="rating" className="form-control"
-                                                    name="rating">
+                                    <Control.select
+                                        model=".rating"
+                                        id="rating"
+                                        className="form-control"
+                                        name="rating"
+                                    >
                                         <option>1</option>
                                         <option>2</option>
                                         <option>3</option>
@@ -64,10 +67,16 @@ class CommentForm extends React.Component {
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label htmlFor="yourName" md={4}>Your Name</Label>
+                                <Label htmlFor="lastname" md={4}>Your Name</Label>
                                 <Col md={8}>
-                                    <Control.text model=".lastname" id="lastname" className="form-control" name="lastname" placeholder="Last Name"
-                                                  validators={{ required, minLength: minLength(3), maxLength: maxLength(15) }}/>
+                                    <Control.text
+                                        model=".lastname"
+                                        id="lastname"
+                                        className="form-control"
+                                        name="lastname"
+                                        placeholder="Last Name"
+                                        validators={{ required, minLength: minLength(3), maxLength: maxLength(15) }}
+                                    />
                                     <Errors className="text-danger" model=".lastname" show="touched"
                                             messages={{
                                                 required: 'Required. ',
@@ -85,7 +94,7 @@ class CommentForm extends React.Component {
                             </Row>
                             <Row className="form-group">
                                 <Col md={{size: 10, offset: 0}}>
-                                    <Button type="submit" color="primary" onClick={this.handleSubmitComment}>
+                                    <Button type="submit" color="primary">
                                         Submit
                                     </Button>
                                 </Col>
@@ -110,7 +119,7 @@ function RenderDish( {dish} ) {
   );
 }
 
-function RenderComments( {comments} ) {
+function RenderComments( {comments, addComment, dishId} ) {
 
   if (comments == null || comments.length === 0) {
     return (
@@ -133,7 +142,10 @@ function RenderComments( {comments} ) {
       <ul className="list-unstyled">
         { renderedComments }
       </ul>
-      <CommentForm/>
+      <CommentForm
+          dishId={dishId}
+          addComment={addComment}
+      />
     </div>
   );
 
@@ -159,7 +171,11 @@ const DishDetail = (props) => {
               <RenderDish dish={props.dish} />
             </div>
             <div className="col-12 col-md-5 m-1">
-              <RenderComments comments={props.comments} />
+              <RenderComments
+                  comments={props.comments}
+                  addComment={props.addComment}
+                  dishId={props.dish.id}
+              />
             </div>
           </div>
       </div>

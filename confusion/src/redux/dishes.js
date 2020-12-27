@@ -1,4 +1,3 @@
-import {DISHES} from "../shared/dishes";
 import {ADD_DISHES, DISHES_FAILED, DISHES_LOADING} from "./ActionTypes";
 
 export const Dishes = (

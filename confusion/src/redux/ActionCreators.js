@@ -156,6 +156,52 @@ export const postComment = (dishId, rating, author, comment) => dispatch => {
         })
 }
 
+export const addFeedback = (values) => ({
+    type: ActionTypes.ADD_FEEDBACK,
+    payload: values
+})
+
+export const postFeedback = (values) => dispatch => {
+    //
+    // let newFeedback ={
+    //     firstname: values.firstname,
+    //     lastname: values.lastname,
+    //     telnum: values.telnum,
+    //     email: values.email,
+    //     agree: values.agree,
+    //     contactType: values.contactType,
+    //     message: values.message
+    // }
+
+    fetch(baseUrl + 'feedback', {
+        method: "POST",
+        body: JSON.stringify(values),
+        headers: {
+            "Content-Type": "application/json"
+        },
+        credentials: 'same-origin'
+    }).then(response => {
+        if (response.ok) {
+            return response;
+        } else {
+            let error = new Error('Error ' + response.status + ':' + response.statusText)
+            error.response = response;
+            throw error;
+        }
+    }, err => {
+        throw err;
+    })
+        .then(response => response.json())
+        .then(response => {
+            alert('Thank you for your feedback! \n' + JSON.stringify(response))
+            dispatch(addFeedback(values));
+        })
+        .catch(error => {
+            console.log('post comments ', error.message);
+            alert('Your comment could not be posted\nError: '+error.message);
+        })
+}
+
 export const leadersLoading = () => ({
     type: LEADERS_LOADING,
 });

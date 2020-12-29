@@ -1,27 +1,34 @@
 import React from 'react';
-import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader } from 'reactstrap';
+import {Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Fade} from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { FadeTransform, Stagger } from 'react-animation-components';
+
 
 function RenderLeader( {leader} ) {
   return (
-    <li className="media">
-       <img className="mr-4" src={leader.image} alt="Shot" />
-       <div className="media-body">
-          <h5 className="mt-0 mb-1">{leader.name}</h5>
-          <p>{leader.designation}</p>
-          <p className="mb-4">{leader.description}</p>
-       </div>
-    </li>
+        <li className="media">
+           <img className="mr-4" src={leader.image} alt="Shot" />
+           <div className="media-body">
+              <h5 className="mt-0 mb-1">{leader.name}</h5>
+              <p>{leader.designation}</p>
+              <p className="mb-4">{leader.description}</p>
+           </div>
+        </li>
   );
 }
 
 function About(props) {
 
-    const leaders = props.leaders.leaders.map((leader) => {
-        return (
-            <RenderLeader leader={leader} />
-        );
-    });
+    const leaders =
+        <Stagger in delay={1000}>
+            {props.leaders.leaders.map((leader) => {
+                return (
+                    <Fade in>
+                        <RenderLeader leader={leader} />
+                    </Fade>
+                );
+            })}
+        </Stagger>
 
     return(
         <div className="container">
@@ -79,7 +86,7 @@ function About(props) {
                 </div>
                 <div className="col-12">
                     <ul className="list-unstyled">
-                        {leaders}
+                            {leaders}
                     </ul>
                 </div>
             </div>

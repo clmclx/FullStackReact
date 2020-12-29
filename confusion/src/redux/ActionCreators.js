@@ -1,5 +1,13 @@
 import * as ActionTypes from './ActionTypes';
-import {ADD_COMMENT, ADD_DISHES, DISHES_FAILED, DISHES_LOADING} from './ActionTypes';
+import {
+    ADD_COMMENT,
+    ADD_DISHES,
+    ADD_LEADERS,
+    DISHES_FAILED,
+    DISHES_LOADING,
+    LEADERS_FAILED,
+    LEADERS_LOADING
+} from './ActionTypes';
 import {baseUrl} from "../shared/baseUrls";
 
 export const addComment = ( comment) => ({
@@ -15,7 +23,6 @@ export const dishesFailed = (errmess) => ({
     type: DISHES_FAILED,
     payload: errmess
 });
-
 
 export const addDishes = (dishes) => ({
     type: ADD_DISHES,
@@ -149,3 +156,37 @@ export const postComment = (dishId, rating, author, comment) => dispatch => {
         })
 }
 
+export const leadersLoading = () => ({
+    type: LEADERS_LOADING,
+});
+export const leadersFailed = errMess => ({
+    type: LEADERS_FAILED,
+    payload: errMess
+});
+
+export const addLeaders = leaders => ({
+    type: ADD_LEADERS,
+    payload: leaders
+})
+
+export const fetchLeaders = () => dispatch => {
+    dispatch(leadersLoading())
+    return fetch(baseUrl + 'leaders')
+        .then(response => {
+                if (response.ok) {
+                    return response;
+                }
+                else {
+                    var error = new Error('Error ' + response.status + ': ' + response.statusText);
+                    error.response = response;
+                    throw error;
+                }
+            },
+            error => {
+                var errmess = new Error(error.message);
+                throw errmess;
+            })
+        .then(response => response.json())
+        .then(dishes => dispatch(addLeaders(dishes)))
+        .catch(error => dispatch(leadersFailed(error.message)))
+};
